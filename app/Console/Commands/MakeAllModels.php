@@ -33,7 +33,6 @@ class MakeAllModels extends Command
         $tables = $schema->getTables($schema->getCurrentSchemaName());
         $modelPath = app_path('Models');
 
-
         if (!File::exists($modelPath)) {
             File::makeDirectory($modelPath, 0755, true);
             $this->info("📁 Diretório app/Models criado.");
@@ -47,7 +46,7 @@ class MakeAllModels extends Command
             if (!File::exists($modelFile)) {
                 $this->info("📦 Gerando Model: {$modelName}");
                 Artisan::call('make:model', [
-                    'name' => "{$modelName}"
+                    'name' => $modelName
                 ]);
             } else {
                 $this->warn("⚠️ Model {$modelName} já existe, pulando...");
