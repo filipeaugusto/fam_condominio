@@ -4,12 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ConsumptionCharge extends Model
 {
+    use SoftDeletes;
     protected $fillable = [
-        'condominium_id',
+        'apartment_id',
         'expense_id',
+        'service_class',
         'previous_reading',
         'current_reading',
         'consumption',
@@ -17,9 +20,9 @@ class ConsumptionCharge extends Model
         'total_amount',
     ];
 
-    public function condominium(): BelongsTo
+    public function apartment(): BelongsTo
     {
-        return $this->belongsTo(Condominium::class);
+        return $this->belongsTo(Apartment::class);
     }
 
     public function expense(): BelongsTo

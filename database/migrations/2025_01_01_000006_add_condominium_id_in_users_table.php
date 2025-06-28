@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    // 3. Usuários
     /**
      * Run the migrations.
      */
@@ -26,7 +27,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('organization_id');
+            $table->dropColumn('condominium_id');
         });
     }
 };
