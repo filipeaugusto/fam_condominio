@@ -4,7 +4,6 @@ namespace App\Filament\Resources;
 
 use App\Enums\ExpenseType;
 use App\Filament\Resources\ConsumptionChargeResource\Pages;
-use App\Filament\Resources\ConsumptionChargeResource\RelationManagers;
 use App\Models\ConsumptionCharge;
 use App\Models\Expense;
 use Filament\Forms;
@@ -12,13 +11,11 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ConsumptionChargeResource extends Resource
 {
     protected static ?string $model = ConsumptionCharge::class;
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 5;
     protected static ?string $modelLabel = 'Despesa por rateio';
     protected static ?string $pluralLabel = 'Despesas por rateio';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';

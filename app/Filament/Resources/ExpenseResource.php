@@ -2,21 +2,20 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\ExpenseService;
+use App\Enums\ExpenseType;
 use App\Filament\Resources\ExpenseResource\Pages;
-use App\Filament\Resources\ExpenseResource\RelationManagers;
 use App\Models\Expense;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ExpenseResource extends Resource
 {
     protected static ?string $model = Expense::class;
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 4;
     protected static ?string $modelLabel = 'despesa';
     protected static ?string $pluralLabel = 'despesas';
 
@@ -33,6 +32,17 @@ class ExpenseResource extends Resource
                 Forms\Components\Select::make('type')
                     ->label('Tipo')
                     ->options(Expense::getTypes())
+                    ->live()
+                    ->afterStateUpdated(function (Forms\Set $set) {
+                        $set('service_class', ExpenseService::not_apply->value);
+                    })
+                    ->required(),
+                Forms\Components\Select::make('service_class')
+                    ->label('Classe de serviço')
+                    ->options(Expense::getServices())
+                    ->default(ExpenseService::not_apply->value)
+                    ->disabled(fn (callable $get) => $get('type') !== ExpenseType::variable->value)
+                    ->required(fn (callable $get) => $get('type') === ExpenseType::variable->value)
                     ->required(),
                 Forms\Components\TextInput::make('label')
                     ->label('Nome')

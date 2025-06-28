@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\CondominiumScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Apartment extends Model
@@ -15,6 +15,12 @@ class Apartment extends Model
         'identifier',
         'fraction',
     ];
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new CondominiumScope);
+    }
+
 
     public function condominium(): BelongsTo
     {

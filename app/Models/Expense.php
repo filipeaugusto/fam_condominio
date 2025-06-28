@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use App\Enums\ExpenseServiceClass;
+use App\Enums\ExpenseService;
 use App\Enums\ExpenseType;
+use App\Models\Scopes\CondominiumScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -24,8 +25,14 @@ class Expense extends Model
 
     public $casts = [
         'type' => ExpenseType::class,
-        'service_class' => ExpenseServiceClass::class
+        'service_class' => ExpenseService::class
     ];
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new CondominiumScope);
+    }
+
 
     public function condominium(): BelongsTo
     {
@@ -40,5 +47,9 @@ class Expense extends Model
     public static function getTypes(): string
     {
         return ExpenseType::class;
+    }
+    public static function getServices(): string
+    {
+        return ExpenseService::class;
     }
 }
