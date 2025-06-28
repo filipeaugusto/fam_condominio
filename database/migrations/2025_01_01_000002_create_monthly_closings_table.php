@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->decimal('total_reserve', 10, 2)->default(0);
             $table->decimal('total_amount', 10, 2)->default(0);
             $table->timestamps();
-//            $table->softDeletes();
+            $table->softDeletes();
         });
     }
 
