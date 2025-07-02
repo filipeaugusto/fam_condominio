@@ -24,13 +24,15 @@ class Expense extends Model
     ];
 
     public $casts = [
+        'due_date' => 'date',
+        'included_in_closing' => 'boolean',
         'type' => ExpenseType::class,
         'service_class' => ExpenseService::class
     ];
 
     protected static function booted(): void
     {
-        static::addGlobalScope(new CondominiumScope);
+//        static::addGlobalScope(new CondominiumScope);
     }
 
 

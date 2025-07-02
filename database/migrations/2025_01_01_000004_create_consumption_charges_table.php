@@ -13,8 +13,8 @@ return new class extends Migration {
             $table->foreignId('expense_id')->constrained()->cascadeOnDelete();
             $table->enum('service_class', ['water', 'light', 'cooking_gas', 'not_apply'])->default('not_apply');
             $table->integer('previous_reading')->default(0);
-            $table->integer('current_reading');
-            $table->integer('consumption');
+            $table->integer('current_reading')->default(0);
+            $table->integer('consumption')->default(0);
             $table->decimal('unit_cost', 10, 2)->default(0);
             $table->decimal('total_amount', 10, 2)->default(0);
             $table->timestamps();

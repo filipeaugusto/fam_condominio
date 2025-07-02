@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property mixed $consumption
+ * @property mixed $unit_cost
+ */
 class ConsumptionCharge extends Model
 {
     use SoftDeletes;
@@ -19,6 +23,11 @@ class ConsumptionCharge extends Model
         'unit_cost',
         'total_amount',
     ];
+
+    public function calculateTotal(): float {
+        return $this->consumption * $this->unit_cost;
+    }
+
 
     public function apartment(): BelongsTo
     {

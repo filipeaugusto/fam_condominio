@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Scopes\CondominiumScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Apartment extends Model
@@ -25,5 +26,15 @@ class Apartment extends Model
     public function condominium(): BelongsTo
     {
         return $this->belongsTo(Condominium::class);
+    }
+
+    public function consumptionCharges(): HasMany
+    {
+        return $this->hasMany(ConsumptionCharge::class);
+    }
+
+    public function residents(): HasMany
+    {
+        return $this->hasMany(Resident::class);
     }
 }

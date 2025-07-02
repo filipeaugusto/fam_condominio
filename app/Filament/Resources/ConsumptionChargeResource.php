@@ -48,6 +48,7 @@ class ConsumptionChargeResource extends Resource
                     ->numeric(),
                 Forms\Components\TextInput::make('consumption')
                     ->label('Consumo')
+                    ->default(0)
                     ->required()
                     ->numeric(),
                 Forms\Components\TextInput::make('unit_cost')
@@ -67,20 +68,20 @@ class ConsumptionChargeResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('apartment.id')
+                Tables\Columns\TextColumn::make('apartment.identifier')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('expense.id')
+                Tables\Columns\TextColumn::make('expense.label')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('previous_reading')
-                    ->numeric()
+//                    ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('current_reading')
-                    ->numeric()
+//                    ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('consumption')
-                    ->numeric()
+//                    ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('unit_cost')
                     ->numeric()

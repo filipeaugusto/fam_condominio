@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Condominium;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,6 +10,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class CondominiumFactory extends Factory
 {
+
+    protected $model = Condominium::class;
+
     /**
      * Define the model's default state.
      *
@@ -17,7 +21,7 @@ class CondominiumFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => 'Condomínio: ' . $this->faker->company,
         ];
     }
 }

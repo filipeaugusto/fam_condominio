@@ -18,6 +18,10 @@ class MonthlyClosing extends Model
         'total_amount',
     ];
 
+    protected $casts = [
+        'reference' => 'date',
+    ];
+
     public function condominium(): BelongsTo
     {
         return $this->belongsTo(Condominium::class);
