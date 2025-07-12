@@ -9,38 +9,43 @@ use Filament\Support\Contracts\HasLabel;
 
 enum ExpenseService: string implements HasIcon, HasLabel, HasColor
 {
-    case water = 'water';
-    case light = 'light';
-    case cooking_gas = 'cooking_gas';
-    case not_apply = 'not_apply';
+    case WATER = 'water';
+    case LIGHT = 'light';
+    case COOKING_GAS = 'cooking_gas';
+    case NOT_APPLY = 'not_apply';
+
+    public static function values(): array
+    {
+        return array_column(self::cases(), 'value');
+    }
 
     public function getIcon(): ?string
     {
         return match ($this) {
-            self::water => 'heroicon-m-arrow-path',
-            self::light => 'heroicon-m-arrow-path',
-            self::cooking_gas => 'heroicon-m-arrow-path',
-            self::not_apply => 'heroicon-m-arrow-path',
+            self::WATER => 'heroicon-m-arrow-path',
+            self::LIGHT => 'heroicon-m-arrow-path',
+            self::COOKING_GAS => 'heroicon-m-arrow-path',
+            self::NOT_APPLY => 'heroicon-m-arrow-path',
         };
     }
 
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::water => 'Água',
-            self::light => 'Luz',
-            self::cooking_gas => 'Gás',
-            self::not_apply => 'Não se aplica',
+            self::WATER => 'Água',
+            self::LIGHT => 'Luz',
+            self::COOKING_GAS => 'Gás',
+            self::NOT_APPLY => 'Não se aplica',
         };
     }
 
     public function getColor(): string|array|null
     {
         return match ($this) {
-            self::water => 'success',
-            self::light => 'light',
-            self::cooking_gas => 'warning',
-            self::not_apply => 'light',
+            self::WATER => 'success',
+            self::LIGHT => 'light',
+            self::COOKING_GAS => 'warning',
+            self::NOT_APPLY => 'light',
         };
     }
 }

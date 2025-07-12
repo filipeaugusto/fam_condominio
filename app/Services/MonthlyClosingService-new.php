@@ -2,11 +2,10 @@
 
 namespace App\Services;
 
-use App\Enums\ExpenseType;
 use App\Models\Condominium;
 use App\Models\Expense;
 use App\Models\MonthlyClosing;
-use App\Models\MonthlyClosingApartment;
+use App\Models\ApartmentClosingCharge;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 
@@ -25,10 +24,10 @@ class MonthlyClosingService
             if ($existing) {
                 Expense::where('monthly_closing_id', $existing->id)->update([
                     'included_in_closing' => false,
-                    'monthly_closing_id' => null,
+                    'monthly_cling_id' => null,
                 ]);
 
-                $existing->monthlyClosingApartments()->delete();
+                $existing->apartmentCharges()->delete();
                 $existing->delete();
             }
 
@@ -40,7 +39,7 @@ class MonthlyClosingService
             }
 
             // Cálculo por tipo de despesa
-            $types = ExpenseType::values();
+            $types = ['fixed', 'variable', 'reserve', 'emergency'];
             $totals = [];
 
             foreach ($types as $type) {
@@ -56,10 +55,10 @@ class MonthlyClosingService
             $monthlyClosing = MonthlyClosing::create([
                 'condominium_id' => $condominium->id,
                 'reference' => $refDate,
-                'total_fixed' => $totals['fixed'],
-                'total_variable' => $totals['variable'],
-                'total_reserve' => $totals['reserve'],
-                'total_emergency' => $totals['emergency'],
+                'total_fixed_expenses' => $totals['fixed'],
+                'total_variable_expenses' => $totals['variable'],
+                'total_reserve_expenses' => $totals['reserve'],
+                'total_emergency_expenses' => $totals['emergency'],
                 'total_amount' => $totalAmount,
             ]);
 
@@ -74,9 +73,13 @@ class MonthlyClosingService
 
             // Criar rateios por apartamento
             foreach ($apartments as $apartment) {
-                $amount = round($totalAmount / $totalApartments, 2);
+                $amount =
+                    round($totals['fixed'] / $totalApartments, 2) +
+                    round($totals['variable'] / $totalApartments, 2) +
+                    round($totals['reserve'] / $totalApartments, 2) +
+                    round($totals['emergency'] / $totalApartments, 2);
 
-                MonthlyClosingApartment::create([
+                ApartmentClosingCharge::create([
                     'monthly_closing_id' => $monthlyClosing->id,
                     'apartment_id' => $apartment->id,
                     'amount' => $amount,

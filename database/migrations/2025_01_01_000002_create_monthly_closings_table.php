@@ -10,9 +10,10 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('condominium_id')->constrained('condominiums')->cascadeOnDelete();
             $table->date('reference');
-            $table->decimal('total_fixed_expenses', 10, 2)->default(0);
-            $table->decimal('total_variable_expenses', 10, 2)->default(0);
+            $table->decimal('total_fixed', 10, 2)->default(0);
+            $table->decimal('total_variable', 10, 2)->default(0);
             $table->decimal('total_reserve', 10, 2)->default(0);
+            $table->decimal('total_emergency', 10, 2)->default(0);
             $table->decimal('total_amount', 10, 2)->default(0);
             $table->timestamps();
             $table->softDeletes();

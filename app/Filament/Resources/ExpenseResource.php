@@ -34,15 +34,15 @@ class ExpenseResource extends Resource
                     ->options(Expense::getTypes())
                     ->live()
                     ->afterStateUpdated(function (Forms\Set $set) {
-                        $set('service_class', ExpenseService::not_apply->value);
+                        $set('service_class', ExpenseService::NOT_APPLY->value);
                     })
                     ->required(),
                 Forms\Components\Select::make('service_class')
                     ->label('Classe de serviço')
                     ->options(Expense::getServices())
-                    ->default(ExpenseService::not_apply->value)
-                    ->disabled(fn (callable $get) => $get('type') !== ExpenseType::variable->value)
-                    ->required(fn (callable $get) => $get('type') === ExpenseType::variable->value)
+                    ->default(ExpenseService::NOT_APPLY->value)
+                    ->disabled(fn (callable $get) => $get('type') !== ExpenseType::VARIABLE->value)
+                    ->required(fn (callable $get) => $get('type') === ExpenseType::VARIABLE->value)
                     ->required(),
                 Forms\Components\TextInput::make('label')
                     ->label('Nome')
@@ -81,14 +81,14 @@ class ExpenseResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('due_date')
                     ->label('Data de vencimento')
-                    ->date()
+                    ->date('d/m/Y')
                     ->sortable(),
                 Tables\Columns\IconColumn::make('included_in_closing')
                     ->label('Incluído no fechamento')
                     ->boolean(),
-                Tables\Columns\TextColumn::make('monthlyClosing.id')
+                Tables\Columns\TextColumn::make('monthlyClosing.reference')
                     ->label('Fechamento mensal')
-                    ->numeric()
+                    ->date('d/m/Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

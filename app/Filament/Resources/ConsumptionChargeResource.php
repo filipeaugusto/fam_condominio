@@ -33,7 +33,7 @@ class ConsumptionChargeResource extends Resource
                     ->options(function () {
                         return Expense::query()
                             ->where('included_in_closing', false)
-                            ->where('type', ExpenseType::variable->value)
+                            ->where('type', ExpenseType::VARIABLE->value)
                             ->pluck('label', 'id');
                     })
                     ->required(),

@@ -2,21 +2,21 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ApartmentResource\Pages;
-use App\Models\Apartment;
+use App\Filament\Resources\UserResource\Pages;
+use App\Filament\Resources\UserResource\RelationManagers;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ApartmentResource extends Resource
+class UserResource extends Resource
 {
-    protected static ?string $model = Apartment::class;
-    protected static ?int $navigationSort = 2;
+    protected static ?string $model = User::class;
 
-    protected static ?string $modelLabel = 'apartamento';
-    protected static ?string $pluralLabel = 'apartamentos';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
@@ -24,15 +24,19 @@ class ApartmentResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('condominium_id')
-                    ->relationship('condominium', 'name')
-                    ->required(),
-                Forms\Components\TextInput::make('identifier')
+                    ->relationship('condominium', 'name'),
+                Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('fraction')
+                Forms\Components\TextInput::make('email')
+                    ->email()
                     ->required()
-                    ->numeric()
-                    ->default(0.00),
+                    ->maxLength(255),
+                Forms\Components\DateTimePicker::make('email_verified_at'),
+                Forms\Components\TextInput::make('password')
+                    ->password()
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 
@@ -43,21 +47,18 @@ class ApartmentResource extends Resource
                 Tables\Columns\TextColumn::make('condominium.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('identifier')
-                    ->sortable()
+                Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('fraction')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('email')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('email_verified_at')
+                    ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -85,9 +86,9 @@ class ApartmentResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListApartments::route('/'),
-            'create' => Pages\CreateApartment::route('/create'),
-            'edit' => Pages\EditApartment::route('/{record}/edit'),
+            'index' => Pages\ListUsers::route('/'),
+            'create' => Pages\CreateUser::route('/create'),
+            'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
 }

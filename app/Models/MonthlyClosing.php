@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MonthlyClosing extends Model
@@ -12,9 +13,10 @@ class MonthlyClosing extends Model
     public $fillable = [
         'condominium_id',
         'reference',
-        'total_fixed_expenses',
-        'total_variable_expenses',
+        'total_fixed',
+        'total_variable',
         'total_reserve',
+        'total_emergency',
         'total_amount',
     ];
 
@@ -25,5 +27,10 @@ class MonthlyClosing extends Model
     public function condominium(): BelongsTo
     {
         return $this->belongsTo(Condominium::class);
+    }
+
+    public function monthlyClosingApartments(): HasMany
+    {
+        return $this->hasMany(MonthlyClosingApartment::class);
     }
 }

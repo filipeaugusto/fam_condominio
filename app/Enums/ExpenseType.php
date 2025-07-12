@@ -8,39 +8,44 @@ use Filament\Support\Contracts\HasLabel;
 
 enum ExpenseType: string implements HasIcon, HasLabel, HasColor
 {
-    case fixed = 'fixed';
-    case variable = 'variable';
-    case reserve = 'reserve';
+    case FIXED = 'fixed';
+    case VARIABLE = 'variable';
+    case RESERVE = 'reserve';
 
-    case emergency = 'emergency';
+    case EMERGENCY = 'emergency';
+
+    public static function values(): array
+    {
+        return array_column(self::cases(), 'value');
+    }
 
     public function getColor(): string|array|null
     {
         return match ($this) {
-            self::fixed => 'success',
-            self::variable => 'warning',
-            self::reserve => 'info',
-            self::emergency => 'danger',
+            self::FIXED => 'success',
+            self::VARIABLE => 'warning',
+            self::RESERVE => 'info',
+            self::EMERGENCY => 'danger',
         };
     }
 
     public function getIcon(): ?string
     {
         return match ($this) {
-            self::fixed => 'heroicon-m-arrow-path',
-            self::variable => 'heroicon-m-arrow-path',
-            self::reserve => 'heroicon-m-arrow-path',
-            self::emergency => 'heroicon-m-arrow-path',
+            self::FIXED => 'heroicon-m-arrow-path',
+            self::VARIABLE => 'heroicon-m-arrow-path',
+            self::RESERVE => 'heroicon-m-arrow-path',
+            self::EMERGENCY => 'heroicon-m-arrow-path',
         };
     }
 
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::fixed => 'Fixa',
-            self::variable => 'Variável',
-            self::reserve => 'Reserva',
-            self::emergency => 'Emergêncial'
+            self::FIXED => 'Fixa',
+            self::VARIABLE => 'Variável',
+            self::RESERVE => 'Reserva',
+            self::EMERGENCY => 'Emergêncial'
         };
     }
 }
