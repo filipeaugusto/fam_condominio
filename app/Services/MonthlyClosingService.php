@@ -15,7 +15,11 @@ class MonthlyClosingService
     public function fechar(Condominium $condominium, string $reference): MonthlyClosing
     {
         return DB::transaction(function () use ($condominium, $reference) {
-            $refDate = Carbon::parse($reference)->startOfMonth();
+
+            // Data de referência como o último dia do mês
+            $refDate = Carbon::parse($reference)
+                ->endOfMonth()
+                ->toDateString();
 
             // Reversão de fechamento existente
             $existing = MonthlyClosing::where('condominium_id', $condominium->id)
@@ -45,6 +49,7 @@ class MonthlyClosingService
                 $totals[$type] = Expense::where('condominium_id', $condominium->id)
                     ->where('type', $type)
                     ->where('included_in_closing', false)
+                    ->where('due_date', '<=', $refDate)
                     ->sum('amount');
             }
 
@@ -75,11 +80,20 @@ class MonthlyClosingService
             $consumptionService = app(ConsumptionService::class);
             $expenses = Expense::where('condominium_id', $condominium->id)
                 ->where('included_in_closing', false)
-                ->where('due_date', '<=', Carbon::today())
+                ->where('due_date', '<=', $refDate)
                 ->get();
 
             foreach ($expenses as $expense) {
-                $consumptionService->calculate($expense, $monthlyClosing->id);
+                // Marcar despesas como incluídas
+                $expense->update([
+                    'included_in_closing' => true,
+                    'monthly_closing_id' => $monthlyClosing->id,
+                ]);
+
+                if ($expense->type === ExpenseType::VARIABLE) {
+                    // Calcular rateio por consumo
+                    $consumptionService->calculate($expense, $monthlyClosing->id);
+                }
             }
 
             return $monthlyClosing;

@@ -18,12 +18,6 @@ class ConsumptionService
      */
     public function calculate(Expense $expense, ?int $monthlyClosingId = null): array
     {
-        // Marcar despesas como incluídas
-        $expense->update([
-            'included_in_closing' => true,
-            'monthly_closing_id' => $monthlyClosingId,
-        ]);
-
         $charges = ConsumptionCharge::where('expense_id', $expense->id)->get();
 
         if ($charges->isEmpty()) {

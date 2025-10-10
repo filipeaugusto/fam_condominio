@@ -2,10 +2,13 @@
 
 namespace App\Enums;
 
-use Exception;
+use BackedEnum;
+use Filament\Support\Colors\Color;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
+use Filament\Support\Icons\Heroicon;
+use Illuminate\Contracts\Support\Htmlable;
 
 enum ExpenseService: string implements HasIcon, HasLabel, HasColor
 {
@@ -19,17 +22,17 @@ enum ExpenseService: string implements HasIcon, HasLabel, HasColor
         return array_column(self::cases(), 'value');
     }
 
-    public function getIcon(): ?string
+    public function getIcon(): string|null|BackedEnum
     {
         return match ($this) {
-            self::WATER => 'heroicon-m-arrow-path',
-            self::LIGHT => 'heroicon-m-arrow-path',
-            self::COOKING_GAS => 'heroicon-m-arrow-path',
-            self::NOT_APPLY => 'heroicon-m-arrow-path',
+            self::WATER => Heroicon::Cloud,
+            self::LIGHT => Heroicon::Bolt,
+            self::COOKING_GAS => Heroicon::Fire,
+            self::NOT_APPLY => Heroicon::XMark,
         };
     }
 
-    public function getLabel(): ?string
+    public function getLabel(): string|Htmlable|null
     {
         return match ($this) {
             self::WATER => 'Água',
@@ -42,9 +45,10 @@ enum ExpenseService: string implements HasIcon, HasLabel, HasColor
     public function getColor(): string|array|null
     {
         return match ($this) {
-            self::WATER => 'success',
-            self::LIGHT, self::NOT_APPLY => 'light',
-            self::COOKING_GAS => 'warning',
+            self::WATER => Color::Cyan,
+            self::LIGHT => Color::Sky,
+            self::COOKING_GAS => Color::Red,
+            self::NOT_APPLY => Color::Gray,
         };
     }
 }

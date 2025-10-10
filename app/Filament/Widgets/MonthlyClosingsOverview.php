@@ -3,6 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Models\MonthlyClosing;
+use Filament\Support\Colors\Color;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
@@ -11,6 +12,7 @@ class MonthlyClosingsOverview extends BaseWidget
     protected static ?int $sort = 1;
 
     protected ?string $heading = 'Visão geral do último fechamento mensal';
+
     protected function getCards(): array
     {
         $latest = MonthlyClosing::latest('reference')->first();
@@ -24,22 +26,22 @@ class MonthlyClosingsOverview extends BaseWidget
         return [
             Stat::make('Mês de Referência', $latest->reference->format('m/Y'))
                 ->description('Mês do fechamento mensal')
-                ->color('secondary'),
+                ->color(Color::Gray),
             Stat::make('Total Fixo', 'R$ ' . number_format($latest->total_fixed, 2, ',', '.'))
                 ->description('Despesas fixas do mês')
-                ->color('primary'),
+                ->color(Color::Blue),
             Stat::make('Total Variável', 'R$ ' . number_format($latest->total_variable, 2, ',', '.'))
                 ->description('Despesas variáveis')
-                ->color('warning'),
+                ->color(Color::Yellow),
             Stat::make('Reserva', 'R$ ' . number_format($latest->total_reserve, 2, ',', '.'))
                 ->description('Reserva')
-                ->color('success'),
+                ->color(Color::Cyan),
             Stat::make('Emergência', 'R$ ' . number_format($latest->total_emergency, 2, ',', '.'))
                 ->description('Emergência')
-                ->color('danger'),
+                ->color(Color::Red),
             Stat::make('Total Geral', 'R$ ' . number_format($latest->total_amount, 2, ',', '.'))
                 ->description('Total Geral')
-                ->color('success'),
+                ->color(Color::Green),
         ];
     }
 }

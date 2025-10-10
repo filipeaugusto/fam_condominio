@@ -37,7 +37,6 @@ class ExpensesTable
                     ->numeric()
                     ->money("BRL")
                     ->summarize(Sum::make())
-                    ->numeric()
                     ->sortable(),
                 TextColumn::make('due_date')
                     ->label('Dt. vencimento')
@@ -79,10 +78,12 @@ class ExpensesTable
                     }),
                 IconColumn::make('included_in_closing')
                     ->label('Fechado')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->boolean(),
                 TextColumn::make('monthlyClosing.reference')
                     ->label('referência')
-                    ->date('d/m/Y'),
+                    ->date('d/m/Y')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

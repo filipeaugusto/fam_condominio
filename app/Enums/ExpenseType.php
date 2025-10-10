@@ -2,9 +2,13 @@
 
 namespace App\Enums;
 
+use BackedEnum;
+use Filament\Support\Colors\Color;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
+use Filament\Support\Icons\Heroicon;
+use Illuminate\Contracts\Support\Htmlable;
 
 enum ExpenseType: string implements HasIcon, HasLabel, HasColor
 {
@@ -22,27 +26,27 @@ enum ExpenseType: string implements HasIcon, HasLabel, HasColor
     public function getColor(): string|array|null
     {
         return match ($this) {
-            self::FIXED => 'success',
-            self::VARIABLE => 'warning',
-            self::RESERVE => 'info',
-            self::EMERGENCY => 'danger',
+            self::FIXED => Color::Cyan,
+            self::VARIABLE => Color::Yellow,
+            self::RESERVE => Color::Green,
+            self::EMERGENCY => Color::Red,
         };
     }
 
-    public function getIcon(): ?string
+    public function getIcon(): string|null|BackedEnum
     {
         return match ($this) {
-            self::FIXED => 'heroicon-m-arrow-path',
-            self::VARIABLE => 'heroicon-m-arrow-path',
-            self::RESERVE => 'heroicon-m-arrow-path',
-            self::EMERGENCY => 'heroicon-m-arrow-path',
+            self::FIXED => Heroicon::ArrowPath,
+            self::VARIABLE => Heroicon::InformationCircle,
+            self::RESERVE => Heroicon::Banknotes,
+            self::EMERGENCY => Heroicon::ExclamationTriangle,
         };
     }
 
-    public function getLabel(): ?string
+    public function getLabel(): string|Htmlable|null
     {
         return match ($this) {
-            self::FIXED => 'Fixa',
+            self::FIXED => 'Recorrente',
             self::VARIABLE => 'Variável',
             self::RESERVE => 'Reserva',
             self::EMERGENCY => 'Emergêncial'
