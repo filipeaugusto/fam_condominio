@@ -13,12 +13,15 @@ class ApartmentsOverview extends BaseWidget
     protected static ?int $sort = 5;
     protected static ?string $maxHeight = '400px';
 
+    protected int|string|array $columnSpan = [
+        'default' => 1,
+        'md' => 'full',
+    ];
+
     protected function getTableQuery(): Builder
     {
-        // pega o último fechamento mensal
         $latestClosing = MonthlyClosing::latest('reference')->first();
 
-        // se não houver fechamento ainda, evita erro
         if (! $latestClosing) {
             return MonthlyClosingApartment::query()->whereNull('id');
         }

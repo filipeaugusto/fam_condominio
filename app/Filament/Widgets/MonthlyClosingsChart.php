@@ -13,7 +13,7 @@ class MonthlyClosingsChart extends ChartWidget
 
     protected ?string $description = 'Evolução dos fechamentos mensais';
 
-    protected ?string $maxHeight = '200px';
+    protected ?string $maxHeight = '400px';
 
     protected function getData(): array
     {

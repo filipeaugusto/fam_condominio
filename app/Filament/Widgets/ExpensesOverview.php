@@ -12,6 +12,9 @@ class ExpensesOverview extends BaseWidget
 {
     protected static ?string $heading = 'Despesas do condomínio';
 
+    protected static ?int $sort = 4;
+    protected static ?string $maxHeight = '400px';
+
     protected int|string|array $columnSpan = [
         'default' => 1,
         'md' => 'full',

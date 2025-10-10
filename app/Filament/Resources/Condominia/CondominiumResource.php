@@ -20,9 +20,12 @@ class CondominiumResource extends Resource
 {
     protected static ?string $model = Condominium::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::BuildingOffice2;
 
-    protected static ?string $recordTitleAttribute = 'Condominium';
+    protected static ?string $recordTitleAttribute = 'Condomínio';
+    protected static ?string $modelLabel = 'Condomínio';
+    protected static ?string $pluralModelLabel = 'Condomínios';
+    protected static ?int $navigationSort = 1;
 
     public static function form(Schema $schema): Schema
     {

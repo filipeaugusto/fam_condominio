@@ -20,9 +20,14 @@ class ExpenseResource extends Resource
 {
     protected static ?string $model = Expense::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::CurrencyDollar;
 
-    protected static ?string $recordTitleAttribute = 'Expense';
+    protected static ?string $recordTitleAttribute = 'Depesa';
+    protected static ?string $modelLabel = 'Depesa';
+    protected static ?string $pluralModelLabel = 'Depesas';
+    protected static ?int $navigationSort = 1;
+    protected static ?string $navigationLabel = 'Gerenciar depesas';
+    protected static string|null|\UnitEnum $navigationGroup = 'Financeiro';
 
     public static function form(Schema $schema): Schema
     {

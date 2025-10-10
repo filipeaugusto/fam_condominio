@@ -20,9 +20,14 @@ class ConsumptionChargeResource extends Resource
 {
     protected static ?string $model = ConsumptionCharge::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::DocumentDuplicate;
 
-    protected static ?string $recordTitleAttribute = 'ConsumptionCharge';
+    protected static ?string $recordTitleAttribute = 'Despesa por rateio';
+    protected static ?string $modelLabel = 'Despesa por rateio';
+    protected static ?string $pluralModelLabel = 'Despesas por rateio';
+    protected static ?int $navigationSort = 2;
+    protected static ?string $navigationLabel = 'Gerenciar rateios';
+    protected static string|null|\UnitEnum $navigationGroup = 'Financeiro';
 
     public static function form(Schema $schema): Schema
     {

@@ -18,9 +18,13 @@ class ResidentResource extends Resource
 {
     protected static ?string $model = Resident::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::Users;
 
-    protected static ?string $recordTitleAttribute = 'Resident';
+    protected static ?string $recordTitleAttribute = 'Residente';
+    protected static ?string $modelLabel = 'Residente';
+    protected static ?string $pluralModelLabel = 'Residentes';
+    protected static ?int $navigationSort = 3;
+
 
     public static function form(Schema $schema): Schema
     {

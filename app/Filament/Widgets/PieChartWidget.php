@@ -11,9 +11,7 @@ class PieChartWidget extends ChartWidget
 
     protected ?string $heading = 'Composição do último fechamento';
 
-//    protected ?string $description = 'Composição do último fechamento';
-
-    protected ?string $maxHeight = '200px';
+    protected ?string $maxHeight = '175px';
 
     protected function getData(): array
     {
