@@ -8,6 +8,8 @@ use App\Models\ConsumptionCharge;
 use App\Models\Expense;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -39,18 +41,37 @@ class ConsumptionChargeResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('previous_reading')
                     ->label('Leitura anterior')
-                    ->required()
                     ->numeric()
-                    ->default(0),
+                    ->default(0)
+                    ->live(debounce: 750)
+                    ->afterStateUpdated(function ($state, Set $set, Get $get) {
+                        $previous = (float) $state;
+                        $current = (float) $get('current_reading');
+                        $set('consumption', max($current - $previous, 0));
+                    }),
                 Forms\Components\TextInput::make('current_reading')
                     ->label('Leitura atual')
+                    ->numeric()
                     ->required()
-                    ->numeric(),
+                    ->live(debounce: 750)
+                    ->afterStateUpdated(function ($state, Set $set, Get $get) {
+                        $previous = (float) $get('previous_reading');
+                        $current = (float) $state;
+                        $set('consumption', max($current - $previous, 0));
+                    })
+                    ->rule(function (Get $get) {
+                        return function (string $attribute, $value, $fail) use ($get) {
+                            if ($value < $get('previous_reading')) {
+                                $fail('A leitura atual deve ser maior ou igual a leitura anterior.');
+                            }
+                        };
+                    }),
                 Forms\Components\TextInput::make('consumption')
-                    ->label('Consumo')
-                    ->default(0)
-                    ->required()
-                    ->numeric(),
+                    ->label('Consumo (m³)')
+                    ->numeric()
+                    ->readOnly() // não editável manualmente
+                    ->dehydrated(true) // salva no banco
+                    ->default(0),
                 Forms\Components\TextInput::make('unit_cost')
                     ->label('Custo unitário')
                     ->required()

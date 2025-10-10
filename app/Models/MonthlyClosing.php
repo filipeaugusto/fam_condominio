@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class MonthlyClosing extends Model
 {
     use SoftDeletes;
+
     public $fillable = [
         'condominium_id',
         'reference',
@@ -23,6 +24,17 @@ class MonthlyClosing extends Model
     protected $casts = [
         'reference' => 'date',
     ];
+
+    protected static function booted(): void
+    {
+        static::deleting(function (self $closing) {
+            if ($closing->isForceDeleting()) {
+                $closing->monthlyClosingApartments()->forceDelete();
+            } else {
+                $closing->monthlyClosingApartments()->delete();
+            }
+        });
+    }
 
     public function condominium(): BelongsTo
     {

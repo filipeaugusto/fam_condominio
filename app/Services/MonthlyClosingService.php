@@ -27,8 +27,6 @@ class MonthlyClosingService
                     'included_in_closing' => false,
                     'monthly_closing_id' => null,
                 ]);
-
-                $existing->monthlyClosingApartments()->delete();
                 $existing->delete();
             }
 
@@ -63,24 +61,24 @@ class MonthlyClosingService
                 'total_amount' => $totalAmount,
             ]);
 
-            // Marcar despesas como incluídas
-            Expense::where('condominium_id', $condominium->id)
-                ->whereIn('type', $types)
-                ->where('included_in_closing', false)
-                ->update([
-                    'included_in_closing' => true,
-                    'monthly_closing_id' => $monthlyClosing->id,
-                ]);
+            $totalAmount -= $totals['variable'];
 
             // Criar rateios por apartamento
             foreach ($apartments as $apartment) {
-                $amount = round($totalAmount / $totalApartments, 2);
-
                 MonthlyClosingApartment::create([
                     'monthly_closing_id' => $monthlyClosing->id,
                     'apartment_id' => $apartment->id,
-                    'amount' => $amount,
+                    'amount' => round($totalAmount / $totalApartments, 2),
                 ]);
+            }
+
+            $consumptionService = app(ConsumptionService::class);
+            $expenses = Expense::where('condominium_id', $condominium->id)
+                ->where('included_in_closing', false)
+                ->get();
+
+            foreach ($expenses as $expense) {
+                $consumptionService->calculate($expense, $monthlyClosing->id);
             }
 
             return $monthlyClosing;
