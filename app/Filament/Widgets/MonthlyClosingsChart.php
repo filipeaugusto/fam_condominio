@@ -9,11 +9,11 @@ class MonthlyClosingsChart extends ChartWidget
 {
     protected static ?int $sort = 2;
 
-    protected static ?string $heading = 'Evolução';
+    protected ?string $heading = 'Evolução dos fechamentos mensais';
 
-    protected static ?string $description = 'Evolução dos fechamentos mensais';
+    protected ?string $description = 'Evolução dos fechamentos mensais';
 
-    protected static ?string $maxHeight = '200px';
+    protected ?string $maxHeight = '200px';
 
     protected function getData(): array
     {

@@ -43,9 +43,8 @@ enum ExpenseService: string implements HasIcon, HasLabel, HasColor
     {
         return match ($this) {
             self::WATER => 'success',
-            self::LIGHT => 'light',
+            self::LIGHT, self::NOT_APPLY => 'light',
             self::COOKING_GAS => 'warning',
-            self::NOT_APPLY => 'light',
         };
     }
 }

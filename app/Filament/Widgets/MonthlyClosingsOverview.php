@@ -10,6 +10,7 @@ class MonthlyClosingsOverview extends BaseWidget
 {
     protected static ?int $sort = 1;
 
+    protected ?string $heading = 'Visão geral do último fechamento mensal';
     protected function getCards(): array
     {
         $latest = MonthlyClosing::latest('reference')->first();
@@ -21,18 +22,24 @@ class MonthlyClosingsOverview extends BaseWidget
         }
 
         return [
-            Stat::make('Mês de Referência', $latest->reference->format('m/Y')),
+            Stat::make('Mês de Referência', $latest->reference->format('m/Y'))
+                ->description('Mês do fechamento mensal')
+                ->color('secondary'),
             Stat::make('Total Fixo', 'R$ ' . number_format($latest->total_fixed, 2, ',', '.'))
                 ->description('Despesas fixas do mês')
-                ->color('success'),
+                ->color('primary'),
             Stat::make('Total Variável', 'R$ ' . number_format($latest->total_variable, 2, ',', '.'))
-                ->description('Despesas variáveis'),
+                ->description('Despesas variáveis')
+                ->color('warning'),
             Stat::make('Reserva', 'R$ ' . number_format($latest->total_reserve, 2, ',', '.'))
-                ->color('info'),
+                ->description('Reserva')
+                ->color('success'),
             Stat::make('Emergência', 'R$ ' . number_format($latest->total_emergency, 2, ',', '.'))
+                ->description('Emergência')
                 ->color('danger'),
             Stat::make('Total Geral', 'R$ ' . number_format($latest->total_amount, 2, ',', '.'))
-                ->color('primary'),
+                ->description('Total Geral')
+                ->color('success'),
         ];
     }
 }

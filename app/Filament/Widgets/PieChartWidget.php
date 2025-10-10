@@ -9,11 +9,11 @@ class PieChartWidget extends ChartWidget
 {
     protected static ?int $sort = 3;
 
-    protected static ?string $heading = 'Composição';
+    protected ?string $heading = 'Composição do último fechamento';
 
-    protected static ?string $description = 'Composição do último fechamento';
+//    protected ?string $description = 'Composição do último fechamento';
 
-    protected static ?string $maxHeight = '200px';
+    protected ?string $maxHeight = '200px';
 
     protected function getData(): array
     {
