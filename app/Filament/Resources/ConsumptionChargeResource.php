@@ -12,6 +12,7 @@ use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Table;
 
 class ConsumptionChargeResource extends Resource
@@ -90,35 +91,44 @@ class ConsumptionChargeResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('apartment.identifier')
+                    ->label('Apartamento')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('expense.label')
+                    ->label('Despesa variável')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('previous_reading')
-//                    ->numeric()
+                    ->label('Leitura anterior')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('current_reading')
-//                    ->numeric()
+                    ->label('Leitura atual')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('consumption')
-//                    ->numeric()
+                    ->label('Consumo')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('unit_cost')
+                    ->label('Custo')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('total_amount')
+                    ->label('Total')
                     ->numeric()
+                    ->money("BRL")
+                    ->summarize(Sum::make())
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Criado em')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Atualizado em')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('deleted_at')
+                    ->label('Deletado em')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

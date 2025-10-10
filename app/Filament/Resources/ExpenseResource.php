@@ -10,6 +10,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Table;
 
 class ExpenseResource extends Resource
@@ -78,6 +79,7 @@ class ExpenseResource extends Resource
                     ->label('Valor')
                     ->numeric()
                     ->money("BRL")
+                    ->summarize(Sum::make())
                     ->sortable(),
                 Tables\Columns\TextColumn::make('due_date')
                     ->label('Data de vencimento')
