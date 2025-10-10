@@ -75,6 +75,7 @@ class MonthlyClosingService
             $consumptionService = app(ConsumptionService::class);
             $expenses = Expense::where('condominium_id', $condominium->id)
                 ->where('included_in_closing', false)
+                ->where('due_date', '<=', Carbon::today())
                 ->get();
 
             foreach ($expenses as $expense) {

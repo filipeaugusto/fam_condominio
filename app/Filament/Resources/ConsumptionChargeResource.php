@@ -18,10 +18,14 @@ use Filament\Tables\Table;
 class ConsumptionChargeResource extends Resource
 {
     protected static ?string $model = ConsumptionCharge::class;
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 2;
     protected static ?string $modelLabel = 'Despesa por rateio';
     protected static ?string $pluralLabel = 'Despesas por rateio';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $navigationLabel = 'Despesas por rateio';
+    protected static ?string $pluralModelLabel = 'Despesas por rateio';
+    protected static ?string $navigationGroup = 'Financeiro';
 
     public static function form(Form $form): Form
     {

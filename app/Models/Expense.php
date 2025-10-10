@@ -5,9 +5,12 @@ namespace App\Models;
 use App\Enums\ExpenseService;
 use App\Enums\ExpenseType;
 use App\Models\Scopes\CondominiumScope;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 
 class Expense extends Model
 {
@@ -35,6 +38,32 @@ class Expense extends Model
 //        static::addGlobalScope(new CondominiumScope);
     }
 
+    protected function label(): Attribute
+    {
+        return Attribute::make(
+            set: fn ($value) => strtoupper($value),
+        );
+    }
+
+    protected function status(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                $dueDate = Carbon::parse($attributes['due_date']);
+                $isPaid = $attributes['included_in_closing'] ?? false; // ou outro campo, ex: 'paid'
+
+                if ($isPaid) {
+                    return 'Paga';
+                }
+
+                if ($dueDate->isPast()) {
+                    return 'Vencida';
+                }
+
+                return 'A vencer';
+            }
+        );
+    }
 
     public function condominium(): BelongsTo
     {
@@ -53,5 +82,12 @@ class Expense extends Model
     public static function getServices(): string
     {
         return ExpenseService::class;
+    }
+
+    public function scopeOverdue(Builder $query): Builder
+    {
+        return $query
+            ->where('included_in_closing', false)
+            ->where('due_date', '<', Carbon::today());
     }
 }

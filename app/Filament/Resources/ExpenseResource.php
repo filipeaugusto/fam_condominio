@@ -12,15 +12,19 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 
 class ExpenseResource extends Resource
 {
     protected static ?string $model = Expense::class;
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 1;
     protected static ?string $modelLabel = 'despesa';
     protected static ?string $pluralLabel = 'despesas';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Financeiro';
+
 
     public static function form(Form $form): Form
     {
@@ -85,6 +89,40 @@ class ExpenseResource extends Resource
                     ->label('Data de vencimento')
                     ->date('d/m/Y')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->label('Status')
+                    ->colors([
+                        'danger' => 'Vencida',
+                        'warning' => 'A vencer',
+                        'success' => 'Paga',
+                    ])
+                    ->icons([
+                        'heroicon-o-x-circle' => 'Vencida',
+                        'heroicon-o-clock' => 'A vencer',
+                        'heroicon-o-check-circle' => 'Paga',
+                    ])
+                    // se quiser permitir ordenação por "status" (virtual), implemente uma query custom:
+                    ->sortable(query: function (Builder $query, string $direction): Builder {
+                        // mapear status para ordem: Paga(1), Vencida(2), A vencer(3)
+                        $today = Carbon::today()->toDateString();
+                        return $query->orderByRaw("
+                            CASE
+                                WHEN included_in_closing = 1 THEN 1
+                                WHEN due_date < ? THEN 2
+                                ELSE 3
+                            END {$direction}
+                        ", [$today]);
+                    })
+                    // e se quiser permitir busca por texto (sobre o status), implemente query custom de search
+                    ->searchable(query: function (Builder $query, string $search): Builder {
+                        return $query->where(function (Builder $q) use ($search) {
+                            $q->whereRaw("CASE WHEN included_in_closing = 1 THEN 'Paga' WHEN due_date < ? THEN 'Vencida' ELSE 'A vencer' END LIKE ?", [
+                                Carbon::today()->toDateString(),
+                                "%{$search}%"
+                            ]);
+                        });
+                    }),
                 Tables\Columns\IconColumn::make('included_in_closing')
                     ->label('Incluído no fechamento')
                     ->boolean(),
@@ -105,8 +143,12 @@ class ExpenseResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('included_in_closing')
             ->filters([
-                //
+                Tables\Filters\Filter::make('overdue')
+                    ->label('Somente vencidas')
+                    ->query(fn (Builder $query): Builder => $query->overdue())
+                    ->toggle(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
