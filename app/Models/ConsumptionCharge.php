@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ExpenseService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,6 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class ConsumptionCharge extends Model
 {
     use SoftDeletes;
+
     protected $fillable = [
         'apartment_id',
         'expense_id',
@@ -24,10 +26,13 @@ class ConsumptionCharge extends Model
         'total_amount',
     ];
 
+    public $casts = [
+        'service_class' => ExpenseService::class
+    ];
+
     public function calculateTotal(): float {
         return $this->consumption * $this->unit_cost;
     }
-
 
     public function apartment(): BelongsTo
     {

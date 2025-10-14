@@ -15,7 +15,6 @@ enum ExpenseType: string implements HasIcon, HasLabel, HasColor
     case FIXED = 'fixed';
     case VARIABLE = 'variable';
     case RESERVE = 'reserve';
-
     case EMERGENCY = 'emergency';
 
     public static function values(): array
