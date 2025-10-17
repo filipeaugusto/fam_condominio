@@ -2,10 +2,13 @@
 
 namespace App\Filament\Resources\MonthlyClosingApartments\Tables;
 
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Support\Colors\Color;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\Summarizers\Summarizer;
 use Filament\Tables\Columns\TextColumn;
@@ -43,7 +46,9 @@ class MonthlyClosingApartmentsTable
                     ->money("BRL")
                     ->summarize(Sum::make())
                     ->sortable()
-                    ->color('success'),
+                    ->color(function ($record) {
+                        return $record->is_paid ? Color::Green : Color::Yellow;
+                    }),
                 TextColumn::make('created_at')
                     ->label('Criado em')
                     ->dateTime()
@@ -59,8 +64,16 @@ class MonthlyClosingApartmentsTable
                 //
             ])
             ->recordActions([
+                Action::make('markPaid')
+                    ->label('Marcar como pago')
+                    ->icon(Heroicon::Check)
+                    ->requiresConfirmation()
+                    ->action(function ($record) {
+                        $record->update(['is_paid' => true, 'paid_at' => now()]);
+                    })
+                    ->visible(fn ($record) => ! $record->is_paid),
                 ViewAction::make(),
-                EditAction::make(),
+//                EditAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

@@ -3,6 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Expense;
+use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Widgets\TableWidget as BaseWidget;
 use Illuminate\Database\Eloquent\Builder;
@@ -32,9 +33,13 @@ class ExpensesOverview extends BaseWidget
     {
         $condominiumId = auth()->user()->condominium_id ?? null;
 
+        if (!$condominiumId) {
+            return Expense::query()->where('is_paid', false);
+        }
+
         return Expense::query()
             ->where('condominium_id', $condominiumId)
-            ->where('included_in_closing', false);
+            ->where('is_paid', false);
     }
 
     protected function getTableColumns(): array
@@ -62,8 +67,8 @@ class ExpensesOverview extends BaseWidget
                 ->sortable()
                 ->color(fn ($record) =>
                 $record->due_date < Carbon::today()
-                    ? 'danger'  // vermelho se vencida
-                    : 'warning'
+                    ? Color::Red
+                    : Color::Yellow
                 ),
 
             Tables\Columns\TextColumn::make('amount')

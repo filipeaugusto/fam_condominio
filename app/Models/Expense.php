@@ -15,6 +15,7 @@ use Illuminate\Support\Carbon;
 class Expense extends Model
 {
     use SoftDeletes;
+
     public $fillable = [
         'condominium_id',
         'type',
@@ -91,7 +92,8 @@ class Expense extends Model
     public function scopeOverdue(Builder $query): Builder
     {
         return $query
-            ->where('included_in_closing', false)
+//            ->where('included_in_closing', false)
+            ->where('is_paid', false)
             ->where('due_date', '<', Carbon::today());
     }
 }

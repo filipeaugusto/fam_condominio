@@ -4,6 +4,7 @@ namespace App\Filament\Widgets;
 
 use App\Models\MonthlyClosingApartment;
 use App\Models\MonthlyClosing;
+use Filament\Support\Colors\Color;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Widgets\TableWidget as BaseWidget;
 use Illuminate\Database\Eloquent\Builder;
@@ -37,6 +38,12 @@ class ApartmentsOverview extends BaseWidget
     protected function getTableColumns(): array
     {
         return [
+
+            TextColumn::make('monthlyClosing.reference')
+                ->label('Referência')
+                ->date('m/Y')
+                ->alignLeft(),
+
             TextColumn::make('apartment.identifier')
                 ->label('Apto')
                 ->sortable()
@@ -51,13 +58,8 @@ class ApartmentsOverview extends BaseWidget
                 ->label('Valor (R$)')
                 ->money('BRL')
                 ->sortable()
-                ->color('success')
+                ->color(fn($record) => $record->is_paid ? Color::Green : Color::Yellow)
                 ->alignRight(),
-
-            TextColumn::make('monthlyClosing.reference')
-                ->label('Referência')
-                ->date('m/Y')
-                ->alignCenter(),
         ];
     }
 

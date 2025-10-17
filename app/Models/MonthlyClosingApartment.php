@@ -18,6 +18,8 @@ class MonthlyClosingApartment extends Model
         'apartment_id',
         'amount',
         'discount',
+        'is_paid',
+        'paid_at',
     ];
 
     protected $casts = [
