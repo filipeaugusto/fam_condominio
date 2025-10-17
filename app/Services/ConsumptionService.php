@@ -20,6 +20,8 @@ class ConsumptionService
     {
         $charges = ConsumptionCharge::where('expense_id', $expense->id)->get();
 
+//        dd($charges->isEmpty());
+
         if ($charges->isEmpty()) {
             return [
                 'status' => 'warning',
@@ -40,6 +42,7 @@ class ConsumptionService
             $unitCost = $expense->amount / $totalConsumption;
 
             foreach ($charges as $charge) {
+
                 $apartmentAmount = round($charge->consumption * $unitCost, 2);
 
                 $charge->update([

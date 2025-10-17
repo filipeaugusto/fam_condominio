@@ -14,7 +14,7 @@ class MonthlyClosingCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'app:monthly-closing {condominium_id} {--reference=}';
+    protected $signature = 'expenses:monthly-closing {condominium_id} {--reference=}';
 
     /**
      * The console command description.

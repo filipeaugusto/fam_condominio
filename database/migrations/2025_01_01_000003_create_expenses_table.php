@@ -19,6 +19,10 @@ return new class extends Migration {
             $table->date('due_date');
             $table->boolean('included_in_closing')->default(false);
             $table->foreignId('monthly_closing_id')->nullable()->constrained('monthly_closings')->nullOnDelete();
+            $table->boolean('is_paid')->default(false);
+            $table->timestamp('paid_at')->nullable();
+            $table->string('payment_method')->nullable();
+            $table->string('receipt_path')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

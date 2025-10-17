@@ -25,7 +25,7 @@ class MonthlyClosingResource extends Resource
     protected static ?string $recordTitleAttribute = 'Fechamento mensal';
     protected static ?string $modelLabel = 'Fechamento mensal';
     protected static ?string $pluralModelLabel = 'Fechamento mensais';
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 4;
     protected static ?string $navigationLabel = 'Gerenciar fechamentos';
     protected static string|null|\UnitEnum $navigationGroup = 'Financeiro';
 

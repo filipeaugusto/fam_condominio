@@ -8,8 +8,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
+ * @property mixed $apartment_id
+ * @property mixed $expense_id
+ * @property mixed $service_class
+ * @property mixed $previous_reading
+ * @property mixed $current_reading
  * @property mixed $consumption
  * @property mixed $unit_cost
+ * @property mixed $total_amount
  */
 class ConsumptionCharge extends Model
 {

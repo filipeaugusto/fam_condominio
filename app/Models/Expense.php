@@ -24,6 +24,10 @@ class Expense extends Model
         'due_date',
         'included_in_closing',
         'monthly_closing_id',
+        'is_paid',
+        'paid_at',
+        'payment_method',
+        'receipt_path',
     ];
 
     public $casts = [
@@ -41,7 +45,7 @@ class Expense extends Model
     protected function label(): Attribute
     {
         return Attribute::make(
-            set: fn ($value) => strtoupper($value),
+            set: fn ($value) => mb_strtoupper($value),
         );
     }
 
@@ -50,7 +54,7 @@ class Expense extends Model
         return Attribute::make(
             get: function ($value, $attributes) {
                 $dueDate = Carbon::parse($attributes['due_date']);
-                $isPaid = $attributes['included_in_closing'] ?? false; // ou outro campo, ex: 'paid'
+                $isPaid = $attributes['is_paid'] ?? false; // ou outro campo, ex: 'paid'
 
                 if ($isPaid) {
                     return 'Paga';
