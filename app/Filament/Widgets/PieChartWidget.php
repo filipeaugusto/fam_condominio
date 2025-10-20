@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Enums\ExpenseType;
 use App\Models\MonthlyClosing;
 use Filament\Widgets\ChartWidget;
 
@@ -30,10 +31,20 @@ class PieChartWidget extends ChartWidget
                         $latest->total_reserve,
                         $latest->total_emergency,
                     ],
-                    'backgroundColor' => ['#22c55e', '#eab308', '#3b82f6', '#ef4444'],
+                    'backgroundColor' => [
+                        '#22c55e',
+                        '#eab308',
+                        '#3b82f6',
+                        '#ef4444'
+                    ],
                 ],
             ],
-            'labels' => ['Fixas', 'Variáveis', 'Reserva', 'Emergência'],
+            'labels' => [
+                ExpenseType::from('fixed')->getLabel(),
+                ExpenseType::from('variable')->getLabel(),
+                ExpenseType::from('reserve')->getLabel(),
+                ExpenseType::from('emergency')->getLabel(),
+            ],
         ];
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Enums\ExpenseType;
 use App\Models\MonthlyClosing;
 use Filament\Support\Colors\Color;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
@@ -29,19 +30,19 @@ class MonthlyClosingsOverview extends BaseWidget
                 ->color(Color::Gray),
             Stat::make('Total Fixo', 'R$ ' . number_format($latest->total_fixed, 2, ',', '.'))
                 ->description('Despesas fixas do mês')
-                ->color(Color::Blue),
+                ->color(ExpenseType::from('fixed')->getColor()),
             Stat::make('Total Variável', 'R$ ' . number_format($latest->total_variable, 2, ',', '.'))
                 ->description('Despesas variáveis')
-                ->color(Color::Yellow),
+                ->color(ExpenseType::from('variable')->getColor()),
             Stat::make('Reserva', 'R$ ' . number_format($latest->total_reserve, 2, ',', '.'))
                 ->description('Reserva')
-                ->color(Color::Cyan),
+                ->color(ExpenseType::from('reserve')->getColor()),
             Stat::make('Emergência', 'R$ ' . number_format($latest->total_emergency, 2, ',', '.'))
                 ->description('Emergência')
-                ->color(Color::Red),
+                ->color(ExpenseType::from('emergency')->getColor()),
             Stat::make('Total Geral', 'R$ ' . number_format($latest->total_amount, 2, ',', '.'))
                 ->description('Total Geral')
-                ->color(Color::Green),
+                ->color(Color::Teal),
         ];
     }
 }
