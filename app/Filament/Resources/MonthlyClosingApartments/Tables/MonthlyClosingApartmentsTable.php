@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\MonthlyClosingApartments\Tables;
 
+use App\Filament\Resources\MonthlyClosingApartments\Actions\GenerateBilletAction;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -96,6 +97,7 @@ class MonthlyClosingApartmentsTable
                     ->visible(fn ($record) => ! $record->is_paid),
                 ViewAction::make()->button(),
 //                EditAction::make(),
+                GenerateBilletAction::make()
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

@@ -11,7 +11,8 @@ use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
- * @property int condominium_id
+ * @property int $condominium_id
+ * @property string $document
 */
 class User extends Authenticatable
 {

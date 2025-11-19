@@ -19,6 +19,10 @@ return new class extends Migration
             $table->decimal('discount', 10, 2)->default(0);
             $table->decimal('amount_final', 10, 2)
                 ->storedAs('amount - COALESCE(discount, 0)');
+            $table->boolean('is_billet_generated')->default(false);
+            $table->timestamp('billet_generated_at')->nullable();
+            $table->string('billet_number')->nullable();
+            $table->string('billet_url')->nullable();
             $table->boolean('is_paid')->default(false);
             $table->timestamp('paid_at')->nullable();
             $table->timestamps();

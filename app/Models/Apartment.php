@@ -10,6 +10,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property mixed $condominium_id
+ * @property mixed $identifier
+ * @property mixed $fraction
+**/
 class Apartment extends Model
 {
     use SoftDeletes;
