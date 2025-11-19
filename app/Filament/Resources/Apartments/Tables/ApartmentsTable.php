@@ -41,7 +41,7 @@ class ApartmentsTable
                 TrashedFilter::make(),
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()->button(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

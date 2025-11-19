@@ -79,7 +79,7 @@ class MonthlyClosingsTable
                 TrashedFilter::make(),
             ])
             ->recordActions([
-                ViewAction::make(),
+                ViewAction::make()->button(),
 //                EditAction::make(),
             ])
             ->toolbarActions([

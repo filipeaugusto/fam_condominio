@@ -8,6 +8,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
+use Filament\Support\Colors\Color;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\IconColumn;
@@ -124,12 +125,14 @@ class ExpensesTable
                 Action::make('markPaid')
                     ->label('Marcar como pago')
                     ->icon(Heroicon::Check)
+                    ->button()
+                    ->color(Color::Yellow)
                     ->requiresConfirmation()
                     ->action(function ($record) {
                         $record->update(['is_paid' => true, 'paid_at' => now()]);
                     })
                     ->visible(fn ($record) => ! $record->is_paid && $record->included_in_closing),
-                EditAction::make(),
+                EditAction::make()->button(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

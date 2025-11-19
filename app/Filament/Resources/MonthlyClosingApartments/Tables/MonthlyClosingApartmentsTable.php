@@ -9,6 +9,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Support\Colors\Color;
 use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\Summarizers\Summarizer;
 use Filament\Tables\Columns\TextColumn;
@@ -49,6 +50,25 @@ class MonthlyClosingApartmentsTable
                     ->color(function ($record) {
                         return $record->is_paid ? Color::Green : Color::Yellow;
                     }),
+                SelectColumn::make('is_paid')
+                    ->width(10)
+                    ->visible(false)
+                    ->label('Pago?')
+                    ->options([
+                        0 => 'Não',
+                        1 => 'Sim',
+                    ])
+                    ->afterStateUpdated(function ($record, $state) {
+                        if ($state) {
+                            $record->is_paid = true;
+                            $record->paid_at = now();
+                        } else {
+                            $record->is_paid = false;
+                            $record->paid_at = null;
+                        }
+                        $record->save();
+                    })
+                    ->alignment('center'),
                 TextColumn::make('created_at')
                     ->label('Criado em')
                     ->dateTime()
@@ -67,12 +87,14 @@ class MonthlyClosingApartmentsTable
                 Action::make('markPaid')
                     ->label('Marcar como pago')
                     ->icon(Heroicon::Check)
+                    ->button()
+                    ->color(Color::Yellow)
                     ->requiresConfirmation()
                     ->action(function ($record) {
                         $record->update(['is_paid' => true, 'paid_at' => now()]);
                     })
                     ->visible(fn ($record) => ! $record->is_paid),
-                ViewAction::make(),
+                ViewAction::make()->button(),
 //                EditAction::make(),
             ])
             ->toolbarActions([

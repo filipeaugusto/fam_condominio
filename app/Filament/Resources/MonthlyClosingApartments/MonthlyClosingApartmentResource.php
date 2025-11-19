@@ -2,8 +2,6 @@
 
 namespace App\Filament\Resources\MonthlyClosingApartments;
 
-use App\Filament\Resources\MonthlyClosingApartments\Pages\CreateMonthlyClosingApartment;
-use App\Filament\Resources\MonthlyClosingApartments\Pages\EditMonthlyClosingApartment;
 use App\Filament\Resources\MonthlyClosingApartments\Pages\ListMonthlyClosingApartments;
 use App\Filament\Resources\MonthlyClosingApartments\Schemas\MonthlyClosingApartmentForm;
 use App\Filament\Resources\MonthlyClosingApartments\Tables\MonthlyClosingApartmentsTable;
@@ -48,8 +46,6 @@ class MonthlyClosingApartmentResource extends Resource
     {
         return [
             'index' => ListMonthlyClosingApartments::route('/'),
-            'create' => CreateMonthlyClosingApartment::route('/create'),
-            'edit' => EditMonthlyClosingApartment::route('/{record}/edit'),
         ];
     }
 }

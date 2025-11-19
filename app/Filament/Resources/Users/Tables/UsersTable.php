@@ -42,7 +42,7 @@ class UsersTable
                 //
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()->button(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

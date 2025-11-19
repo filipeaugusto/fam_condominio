@@ -7,6 +7,7 @@ use App\Models\Condominium;
 use App\Models\Expense;
 use App\Models\MonthlyClosing;
 use App\Models\MonthlyClosingApartment;
+use App\Models\MonthlyClosingDiscount;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 
@@ -22,15 +23,28 @@ class MonthlyClosingService
                 ->toDateString();
 
             // Reversão de fechamento existente
-            $existing = MonthlyClosing::where('condominium_id', $condominium->id)
+            $existing = MonthlyClosing::query()
+                ->where('condominium_id', $condominium->id)
                 ->where('reference', $refDate)
                 ->first();
 
+
             if ($existing) {
-                Expense::where('monthly_closing_id', $existing->id)->update([
-                    'included_in_closing' => false,
-                    'monthly_closing_id' => null,
-                ]);
+                Expense::query()
+                    ->where('monthly_closing_id', $existing->id)
+                    ->update([
+                        'included_in_closing' => false,
+                        'monthly_closing_id' => null,
+                    ]);
+
+                MonthlyClosingDiscount::query()
+                    ->where('monthly_closing_id', $existing->id)
+                    ->update([
+                        'monthly_closing_id' => null,
+                        'applied' => false,
+                        'applied_at' => null,
+                    ]);
+
                 $existing->delete();
             }
 
@@ -46,7 +60,8 @@ class MonthlyClosingService
             $totals = [];
 
             foreach ($types as $type) {
-                $totals[$type] = Expense::where('condominium_id', $condominium->id)
+                $totals[$type] = Expense::query()
+                    ->where('condominium_id', $condominium->id)
                     ->where('type', $type)
                     ->where('included_in_closing', false)
                     ->where('due_date', '<=', $refDate)
@@ -70,15 +85,39 @@ class MonthlyClosingService
 
             // Criar rateios por apartamento
             foreach ($apartments as $apartment) {
-                MonthlyClosingApartment::create([
-                    'monthly_closing_id' => $monthlyClosing->id,
-                    'apartment_id' => $apartment->id,
-                    'amount' => round($totalAmount / $totalApartments, 2),
-                ]);
+
+                $discounts = MonthlyClosingDiscount::query()
+                    ->where('apartment_id', $apartment->id)
+                    ->where('monthly_closing_id', null)
+                    ->where('applied', 0)
+                    ->sum('amount');
+
+                MonthlyClosingApartment::query()
+                    ->create([
+                        'monthly_closing_id' => $monthlyClosing->id,
+                        'apartment_id' => $apartment->id,
+                        'amount' => round($totalAmount / $totalApartments, 2),
+                        'discount' => $discounts,
+                    ]);
+
+
+                if ($discounts > 0) {
+                    MonthlyClosingDiscount::query()
+                        ->where('apartment_id', $apartment->id)
+                        ->where('monthly_closing_id', null)
+                        ->where('applied', 0)
+                        ->update([
+                            'applied' => true,
+                            'monthly_closing_id' => $monthlyClosing->id,
+                            'applied_at' => Carbon::now(),
+                        ]);
+                }
+
             }
 
             $consumptionService = app(ConsumptionService::class);
-            $expenses = Expense::where('condominium_id', $condominium->id)
+            $expenses = Expense::query()
+                ->where('condominium_id', $condominium->id)
                 ->where('included_in_closing', false)
                 ->where('due_date', '<=', $refDate)
                 ->get();

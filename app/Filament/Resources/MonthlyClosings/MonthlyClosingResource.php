@@ -2,8 +2,6 @@
 
 namespace App\Filament\Resources\MonthlyClosings;
 
-use App\Filament\Resources\MonthlyClosings\Pages\CreateMonthlyClosing;
-use App\Filament\Resources\MonthlyClosings\Pages\EditMonthlyClosing;
 use App\Filament\Resources\MonthlyClosings\Pages\ListMonthlyClosings;
 use App\Filament\Resources\MonthlyClosings\Schemas\MonthlyClosingForm;
 use App\Filament\Resources\MonthlyClosings\Tables\MonthlyClosingsTable;
@@ -50,8 +48,6 @@ class MonthlyClosingResource extends Resource
     {
         return [
             'index' => ListMonthlyClosings::route('/'),
-            'create' => CreateMonthlyClosing::route('/create'),
-            'edit' => EditMonthlyClosing::route('/{record}/edit'),
         ];
     }
 

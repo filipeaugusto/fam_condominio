@@ -34,8 +34,8 @@ class CommunicationTemplatesTable
                 //
             ])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
+                ViewAction::make()->button(),
+                EditAction::make()->button(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

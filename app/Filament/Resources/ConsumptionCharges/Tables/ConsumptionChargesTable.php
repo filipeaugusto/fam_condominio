@@ -69,8 +69,10 @@ class ConsumptionChargesTable
                 TrashedFilter::make(),
             ])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make()->visible(fn ($record) => $record->total_amount == 0 && $record->unit_cost == 0),
+                ViewAction::make()->button(),
+                EditAction::make()
+                    ->button()
+                    ->visible(fn ($record) => $record->total_amount == 0 && $record->unit_cost == 0),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
