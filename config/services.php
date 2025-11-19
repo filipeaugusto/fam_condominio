@@ -40,11 +40,9 @@ return [
             ? 'https://cdpj-sandbox.partners.uatinter.co'
             : 'https://cdpj.partners.bancointer.com.br',
 
-        'client_id' => env('INTER_CLIENT_ID', '328fa4b3-a282-4cfb-9b0b-04ab66ef4d19'),
-        'client_secret' => env('INTER_CLIENT_SECRET', '6365d861-8e29-46fa-9980-cbe646028973'),
+        'client_id' => env('INTER_CLIENT_ID', '1234567890'),
+        'client_secret' => env('INTER_CLIENT_SECRET', '1234567890'),
         'cert_password' => env('INTER_CERTIFICATE_PASSWORD', '1234567890'),
     ],
 
-    // clientId: 2fae0155-99f3-4cc1-926e-45003e790e73
-    // clientSecret: fadc00e7-aebc-48c5-97ed-b6b01f337b05
 ];
