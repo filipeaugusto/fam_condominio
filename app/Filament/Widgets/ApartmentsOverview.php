@@ -60,6 +60,20 @@ class ApartmentsOverview extends BaseWidget
                 ->sortable()
                 ->color(fn($record) => $record->is_paid ? Color::Green : Color::Yellow)
                 ->alignRight(),
+
+            TextColumn::make('discount')
+                ->label('Desconto (R$)')
+                ->money('BRL')
+                ->sortable()
+                ->color(fn($record) => $record->is_paid ? Color::Green : Color::Yellow)
+                ->alignRight(),
+
+            TextColumn::make('amount_final')
+                ->label('Final (R$)')
+                ->money('BRL')
+                ->sortable()
+                ->color(fn($record) => $record->is_paid ? Color::Green : Color::Yellow)
+                ->alignRight(),
         ];
     }
 
