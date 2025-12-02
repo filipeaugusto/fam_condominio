@@ -14,6 +14,7 @@ use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\Summarizers\Summarizer;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -82,7 +83,19 @@ class MonthlyClosingApartmentsTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->label('Status')
+                    ->options([
+                        'paga' => 'Pagas',
+                        'em_aberto' => 'Em aberto',
+                    ])
+                    ->query(function ($query, $data) {
+                        return match ($data['value'] ?? null) {
+                            'paga' => $query->where('is_paid', true),
+                            'em_aberto' => $query->where('is_paid', false),
+                            default => $query,
+                        };
+                    }),
             ])
             ->recordActions([
                 Action::make('markPaid')
